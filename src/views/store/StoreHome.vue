@@ -3,28 +3,24 @@
         <div class="store-loging" v-if="login">登录中……</div>
         <div class="store-home" v-else>
             <search-bar></search-bar>
-            <div v-if="lists != null">
-                <flap-card :data="random"></flap-card>
+                <div v-if="random && random.bookId"><flap-card :data="random"></flap-card></div>
+                <div v-else><loading></loading></div>
                 <scroll :top="scrollTop" :bottom="scrollBottom" @onScroll="onScroll" ref="scroll">
                     <div class="banner-wrapper">
-                        <div v-if="banner != null" class="banner-img" :style="{backgroundImage:`url('${banner}')`}"></div>
+                        <div v-if="(banner && banner.length > 0)" class="banner-img" :style="{backgroundImage:`url('${banner}')`}"></div>
                         <div v-else><loading></loading></div>
                     </div>
-                    <div v-if="guessYouLike != null"><guess-you-like :data="guessYouLike"></guess-you-like></div>
+                    <div v-if="(guessYouLike && guessYouLike.length != 0)"><guess-you-like :data="guessYouLike"></guess-you-like></div>
                     <div v-else><loading></loading></div>
-                    <div v-if="recommend != null"><recommend :data="recommend" class="recommend"></recommend></div>
+                    <div v-if="(recommend && recommend.length != 0)"><recommend :data="recommend" class="recommend"></recommend></div>
                     <div v-else><loading></loading></div>
-                    <div v-if="featured != null"><featured :data="featured" :titleText="$t('home.featured')" :btnText="$t('home.seeAll')" class="featured"></featured></div>
+                    <div v-if="(featured && featured.length != 0)"><featured :data="featured" :titleText="$t('home.featured')" :btnText="$t('home.seeAll')" class="featured"></featured></div>
                     <div v-else><loading></loading></div>
-                    <div v-if="categoryList != null" class="category-list-wrapper" v-for="(item, index) in categoryList" :key="index"><category-book :data="item"></category-book></div>
+                    <div v-if="(categoryList && categoryList.length != 0)" class="category-list-wrapper" v-for="(item, index) in categoryList" :key="index"><category-book :data="item"></category-book></div>
                     <div v-else><loading></loading></div>
-                    <div v-if="categories != null"><category :data="categories" class="categories" ></category></div>
+                    <div v-if="(categories && categories.length != 0)"><category :data="categories" class="categories" ></category></div>
                     <div v-else><loading></loading></div>
                 </scroll>
-            </div>
-            <div v-else>
-                <loading></loading>
-            </div>
             <nav-bar></nav-bar>
         </div>
     </div>
@@ -65,6 +61,7 @@
                 scrollTop: 94,
                 random: null,
                 banner: '',
+                banners: null,
                 guessYouLike: null,
                 recommend: null,
                 featured: null,
@@ -113,17 +110,17 @@
             }
             // 获取openid
             if (this.getCookie('openid') === null) {
-                this.login = true
                 location.href = process.env.VUE_APP_BASE_URL + '/wechat/authorize?returnUrl=' + encodeURIComponent(process.env.VUE_APP_HOME_NGINX_URL + '/#/')
+                this.login = true
             }
             this.login = false
             home(this.openid).then(response => {
                 if (response && response.status === 200 && response.data && response.data.err_no === 0) {
                     this.lists = response.data.data
-                    // console.log(this.lists)
                     const randomIndex = Math.floor(Math.random() * this.lists.random.length)
                     this.random = this.lists.random[randomIndex]
                     this.banner = this.lists.banner
+                    this.banners = this.lists.banners
                     this.guessYouLike = this.lists.guessYouLike
                     this.recommend = this.lists.recommend
                     this.featured = this.lists.featured

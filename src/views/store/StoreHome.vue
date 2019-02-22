@@ -1,25 +1,24 @@
 <template>
     <div>
-        <div class="store-loging" v-if="login">登录中……</div>
-        <div class="store-home" v-else>
+        <div class="store-home">
             <search-bar></search-bar>
-                <div v-if="random && random.bookId"><flap-card :data="random"></flap-card></div>
-                <div v-else><loading></loading></div>
-                <scroll :top="scrollTop" :bottom="scrollBottom" @onScroll="onScroll" ref="scroll">
+            <div v-if="random && random.bookId"><flap-card :data="random"></flap-card></div>
+            <div v-else><cube-loading :size="40"></cube-loading></div>
+            <scroll :top="scrollTop" :bottom="scrollBottom" @onScroll="onScroll" ref="scroll">
                     <div class="banner-wrapper">
                         <div v-if="(banner && banner.length > 0)" class="banner-img" :style="{backgroundImage:`url('${banner}')`}"></div>
-                        <div v-else><loading></loading></div>
+                        <div v-else><cube-loading :size="40"></cube-loading></div>
                     </div>
                     <div v-if="(guessYouLike && guessYouLike.length != 0)"><guess-you-like :data="guessYouLike"></guess-you-like></div>
-                    <div v-else><loading></loading></div>
+                    <div v-else><cube-loading :size="40"></cube-loading></div>
                     <div v-if="(recommend && recommend.length != 0)"><recommend :data="recommend" class="recommend"></recommend></div>
-                    <div v-else><loading></loading></div>
+                    <div v-else><cube-loading :size="40"></cube-loading></div>
                     <div v-if="(featured && featured.length != 0)"><featured :data="featured" :titleText="$t('home.featured')" :btnText="$t('home.seeAll')" class="featured"></featured></div>
-                    <div v-else><loading></loading></div>
+                    <div v-else><cube-loading :size="40"></cube-loading></div>
                     <div v-if="(categoryList && categoryList.length != 0)" class="category-list-wrapper" v-for="(item, index) in categoryList" :key="index"><category-book :data="item"></category-book></div>
-                    <div v-else><loading></loading></div>
+                    <div v-else><cube-loading :size="40"></cube-loading></div>
                     <div v-if="(categories && categories.length != 0)"><category :data="categories" class="categories" ></category></div>
-                    <div v-else><loading></loading></div>
+                    <div v-else><cube-loading :size="40"></cube-loading></div>
                 </scroll>
             <nav-bar></nav-bar>
         </div>
@@ -38,12 +37,9 @@
     import CategoryBook from '../../components/home/CategoryBook'
     import Category from '../../components/home/Category'
     import NavBar from '../../components/common/NavBar'
-    import Loading from '../../components/base/Loading/Loading'
-
     export default {
         mixins: [storeHomeMixin],
         components: {
-            Loading,
             NavBar,
             Category,
             CategoryBook,
@@ -84,36 +80,33 @@
                 }
                 this.$refs.scroll.refresh()
             },
-            // getCookie(name) {
-            //     let arr
-            //     let reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
-            //     console.log(reg)
-            //     if (arr === document.cookie.match(reg)) {
-            //         console.log(arr)
-            //         return unescape(arr[0])
-            //     } else {
-            //         return null
-            //     }
-            // }
             getCookie(name) {
                 return this.$cookies.get(name)
             }
         },
         mounted() {
             const openid = this.$route.query.openid
+            const toast = this.$createToast({
+                txt: '登录中……',
+                mask: true,
+                zIndex: 5000
+            })
             // 如果url里有openid, 设置进cookie
             if (typeof openid !== 'undefined') {
                 let exp = new Date()
                 exp.setTime(exp.getTime() + 3600 * 1000) // 过期时间60分钟
-                // document.cookie = 'openid=' + openid + ';expires=' + exp.toGMTString()
                 this.$cookies.set('openid', openid, exp.toGMTString())
             }
             // 获取openid
             if (this.getCookie('openid') === null) {
+                setTimeout(() => {
+                    toast.show()
+                }, 2000)
                 location.href = process.env.VUE_APP_BASE_URL + '/wechat/authorize?returnUrl=' + encodeURIComponent(process.env.VUE_APP_HOME_NGINX_URL + '/#/')
-                this.login = true
+                setTimeout(() => {
+                    toast.hide()
+                }, 2000)
             }
-            this.login = false
             home(this.openid).then(response => {
                 if (response && response.status === 200 && response.data && response.data.err_no === 0) {
                     this.lists = response.data.data
@@ -144,6 +137,7 @@
     .store-home {
         width: 100%;
         height: 100%;
+        font-size: px2rem(18);
 
         .banner-wrapper {
             width: 100%;

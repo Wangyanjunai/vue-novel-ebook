@@ -64,6 +64,7 @@
         width: 100%;
         height: 100%;
         background: white;
+        font-size: px2rem(18);
 
         .store-shelf-scroll-wrapper {
             position: absolute;

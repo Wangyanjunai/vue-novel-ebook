@@ -39,5 +39,6 @@
     .store-mine {
         width: 100%;
         height: 100%;
+        font-size: px2rem(18);
     }
 </style>

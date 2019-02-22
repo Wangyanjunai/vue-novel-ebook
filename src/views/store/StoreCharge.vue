@@ -218,7 +218,7 @@
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        font-size: px2rem(14);
+        font-size: px2rem(18);
 
         .store-charge-info-wrapper {
             position: relative;
@@ -227,6 +227,7 @@
             width: 100%;
             height: 10%;
             box-shadow: 0 px2rem(2) px2rem(2) 0 rgba(0, 0, 0, .1);
+            font-size: px2rem(14);
 
             .info-account-left-wrapper {
                 height: 100%;
@@ -234,6 +235,7 @@
                 display: flex;
                 left: 0;
                 padding-left: px2rem(15);
+                font-size: px2rem(14);
 
                 .account-head-img {
                     width: px2rem(50);
@@ -285,6 +287,7 @@
                 display: flex;
                 left: 45%;
                 right: 45%;
+                font-size: px2rem(14);
                 @include columnLeft;
 
                 .velotity-linear {
@@ -301,6 +304,7 @@
                 display: flex;
                 right: 0;
                 padding-right: px2rem(15);
+                font-size: px2rem(14);
 
                 .info-money {
                     @include center;
@@ -421,7 +425,7 @@
             height: 30%;
             padding: px2rem(10) px2rem(10);
             box-sizing: border-box;
-
+            font-size: px2rem(14);
             ul {
                 padding-top: px2rem(5);
                 line-height: px2rem(20);

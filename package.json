@@ -25,14 +25,19 @@
     "@vue/cli-plugin-eslint": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
     "@vue/eslint-config-standard": "^3.0.4",
+    "less-loader": "^4.1.0",
     "mockjs": "^1.0.1-beta3",
+    "node-less": "^1.0.0",
     "node-sass": "^4.9.3",
+    "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-cli-plugin-cube-ui": "^0.2.4",
     "vue-lazyload": "^1.2.6",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "webpack-post-compile-plugin": "^0.4.1",
+    "webpack-transform-modules-plugin": "^0.3.5"
   },
   "transformModules": {
     "cube-ui": {

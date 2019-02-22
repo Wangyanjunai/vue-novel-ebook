@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import './cube-ui'
+import Cube from 'cube-ui'
 import VueCookie from 'vue-cookies'
 import App from './App.vue'
 import router from './router'
@@ -15,6 +15,7 @@ import './lazy'
 Vue.config.productionTip = false
 Vue.config.devtools = true
 Vue.use(VueCookie)
+Vue.use(Cube)
 
 new Vue({
   router,

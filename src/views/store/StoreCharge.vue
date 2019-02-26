@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="store-charge-btn">
-                        <span class="charge-btn" @click.stop.prevent="onCharge">立即充值</span>
+                        <cube-button class="charge-btn" :primary="true" :light="true" @click.stop.prevent="onCharge">立即充值</cube-button>
                     </div>
                 </div>
             </div>
@@ -371,7 +371,8 @@
                         border: px2rem(2) solid #ccc;
 
                         &.isSelected {
-                            border: px2rem(2) solid #0c0;
+                            border: px2rem(2) solid #e64340;
+                            color: #e64340;
                         }
 
                         .money-info {

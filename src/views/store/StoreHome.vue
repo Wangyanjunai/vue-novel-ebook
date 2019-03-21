@@ -6,7 +6,17 @@
             <div v-else><cube-loading :size="40"></cube-loading></div>
             <scroll :top="scrollTop" :bottom="scrollBottom" @onScroll="onScroll" ref="scroll">
                     <div class="banner-wrapper">
+                        <!--
                         <div v-if="(banner && banner.length > 0)" class="banner-img" :style="{backgroundImage:`url('${banner}')`}"></div>
+                        <div v-else><cube-loading :size="40"></cube-loading></div>
+                        -->
+                        <div v-if="banners && banners.length !=0">
+                            <cube-slide ref="slide" :data="banners" @change="changePage">
+                                <cube-slide-item v-for="(item, index) in banners" :key="item.id" @click.native="clickHandler(item, index)">
+                                    <div class="banner-img" :style="{backgroundImage:`url('${item.image}')`}"></div>
+                                </cube-slide-item>
+                            </cube-slide>
+                        </div>
                         <div v-else><cube-loading :size="40"></cube-loading></div>
                     </div>
                     <div v-if="(guessYouLike && guessYouLike.length != 0)"><guess-you-like :data="guessYouLike"></guess-you-like></div>
@@ -37,6 +47,7 @@
     import CategoryBook from '../../components/home/CategoryBook'
     import Category from '../../components/home/Category'
     import NavBar from '../../components/common/NavBar'
+    import { gotoBookDetail } from '../../utils/store'
     export default {
         mixins: [storeHomeMixin],
         components: {
@@ -82,6 +93,13 @@
             },
             getCookie(name) {
                 return this.$cookies.get(name)
+            },
+            changePage(current) {
+                // console.log('当前轮播图序号为:' + current)
+            },
+            clickHandler(item, index) {
+                // console.log(item, index)
+                gotoBookDetail(this, item)
             }
         },
         mounted() {
@@ -114,6 +132,7 @@
                     this.random = this.lists.random[randomIndex]
                     this.banner = this.lists.banner
                     this.banners = this.lists.banners
+                    // console.log(this.banners)
                     this.guessYouLike = this.lists.guessYouLike
                     this.recommend = this.lists.recommend
                     this.featured = this.lists.featured
